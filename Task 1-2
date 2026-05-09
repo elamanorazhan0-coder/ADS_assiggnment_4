@@ -1,0 +1,299 @@
+TASK 1: Depth First Search (DFS) Trace
+========================================
+
+Graph Adjacency Lists:
+A: C B D
+B: A C E G
+C: A B D
+D: C A
+E: G F B
+F: G E
+G: F B
+
+Source Node: A
+
+DFS Trace (following Sedgewick & Wayne, page 537):
+--------------------------------------------------
+
+Step-by-step execution:
+
+Initial State:
+- marked[] array: all false
+- edgeTo[] array: all empty
+- Start at vertex A
+
+DFS(A):
+  1. Mark A as visited
+     marked: A=true
+     Visit order: A
+  
+  2. Check adjacency list of A: [C, B, D]
+     
+  3. First adjacent vertex is C (not visited)
+     Call DFS(C), set edgeTo[C] = A
+     
+     DFS(C):
+       4. Mark C as visited
+          marked: A=true, C=true
+          Visit order: A, C
+       
+       5. Check adjacency list of C: [A, B, D]
+       
+       6. A is already visited, skip
+       
+       7. Next is B (not visited)
+          Call DFS(B), set edgeTo[B] = C
+          
+          DFS(B):
+            8. Mark B as visited
+               marked: A=true, C=true, B=true
+               Visit order: A, C, B
+            
+            9. Check adjacency list of B: [A, C, E, G]
+            
+            10. A is visited, skip
+            11. C is visited, skip
+            
+            12. Next is E (not visited)
+                Call DFS(E), set edgeTo[E] = B
+                
+                DFS(E):
+                  13. Mark E as visited
+                      marked: A=true, C=true, B=true, E=true
+                      Visit order: A, C, B, E
+                  
+                  14. Check adjacency list of E: [G, F, B]
+                  
+                  15. First is G (not visited)
+                      Call DFS(G), set edgeTo[G] = E
+                      
+                      DFS(G):
+                        16. Mark G as visited
+                            marked: A=true, C=true, B=true, E=true, G=true
+                            Visit order: A, C, B, E, G
+                        
+                        17. Check adjacency list of G: [F, B]
+                        
+                        18. First is F (not visited)
+                            Call DFS(F), set edgeTo[F] = G
+                            
+                            DFS(F):
+                              19. Mark F as visited
+                                  marked: A=true, C=true, B=true, E=true, G=true, F=true
+                                  Visit order: A, C, B, E, G, F
+                              
+                              20. Check adjacency list of F: [G, E]
+                              
+                              21. G is visited, skip
+                              22. E is visited, skip
+                              23. Return from DFS(F)
+                        
+                        24. B is visited, skip
+                        25. Return from DFS(G)
+                  
+                  26. F is now visited, skip
+                  27. B is visited, skip
+                  28. Return from DFS(E)
+            
+            29. G is now visited, skip
+            30. Return from DFS(B)
+       
+       8. Next is D (not visited)
+          Call DFS(D), set edgeTo[D] = C
+          
+          DFS(D):
+            31. Mark D as visited
+                marked: A=true, C=true, B=true, E=true, G=true, F=true, D=true
+                Visit order: A, C, B, E, G, F, D
+            
+            32. Check adjacency list of D: [C, A]
+            
+            33. C is visited, skip
+            34. A is visited, skip
+            35. Return from DFS(D)
+       
+       36. Return from DFS(C)
+  
+  37. B is now visited, skip
+  38. D is now visited, skip
+  39. Return from DFS(A)
+
+FINAL ANSWER:
+=============
+DFS Visit Order: A → C → B → E → G → F → D
+
+Edge-To Tree (parent relationships):
+- A: (source)
+- C: from A
+- B: from C
+- E: from B
+- G: from E
+- F: from G
+- D: from C
+
+
+
+-------------------------------------------------------------------------------------------
+TASK 2: Breadth First Search (BFS) Trace
+=========================================
+
+Graph Adjacency Lists:
+A: C B D
+B: A C E G
+C: A B D
+D: C A
+E: G F B
+F: G E
+G: F B
+
+Source Node: A
+
+BFS Trace (following Sedgewick & Wayne, page 539):
+--------------------------------------------------
+
+Step-by-step execution:
+
+Initial State:
+- marked[] array: all false
+- edgeTo[] array: all empty
+- queue: empty
+- distTo[] array: all infinity
+
+BFS(A):
+  Step 1: Mark A and enqueue it
+          marked[A] = true
+          distTo[A] = 0
+          queue: [A]
+          Visit order: A
+
+  Step 2: Dequeue A, process its adjacency list [C, B, D]
+          queue: []
+          
+          For vertex C (not visited):
+            - Mark C as visited
+            - Set edgeTo[C] = A
+            - Set distTo[C] = 1
+            - Enqueue C
+            marked[C] = true
+            queue: [C]
+          
+          For vertex B (not visited):
+            - Mark B as visited
+            - Set edgeTo[B] = A
+            - Set distTo[B] = 1
+            - Enqueue B
+            marked[B] = true
+            queue: [C, B]
+          
+          For vertex D (not visited):
+            - Mark D as visited
+            - Set edgeTo[D] = A
+            - Set distTo[D] = 1
+            - Enqueue D
+            marked[D] = true
+            queue: [C, B, D]
+          
+          Visit order: A, C, B, D
+
+  Step 3: Dequeue C, process its adjacency list [A, B, D]
+          queue: [B, D]
+          
+          For vertex A (already visited): skip
+          For vertex B (already visited): skip
+          For vertex D (already visited): skip
+          
+          No new vertices added to queue
+
+  Step 4: Dequeue B, process its adjacency list [A, C, E, G]
+          queue: [D]
+          
+          For vertex A (already visited): skip
+          For vertex C (already visited): skip
+          
+          For vertex E (not visited):
+            - Mark E as visited
+            - Set edgeTo[E] = B
+            - Set distTo[E] = 2
+            - Enqueue E
+            marked[E] = true
+            queue: [D, E]
+          
+          For vertex G (not visited):
+            - Mark G as visited
+            - Set edgeTo[G] = B
+            - Set distTo[G] = 2
+            - Enqueue G
+            marked[G] = true
+            queue: [D, E, G]
+          
+          Visit order: A, C, B, D, E, G
+
+  Step 5: Dequeue D, process its adjacency list [C, A]
+          queue: [E, G]
+          
+          For vertex C (already visited): skip
+          For vertex A (already visited): skip
+          
+          No new vertices added to queue
+
+  Step 6: Dequeue E, process its adjacency list [G, F, B]
+          queue: [G]
+          
+          For vertex G (already visited): skip
+          
+          For vertex F (not visited):
+            - Mark F as visited
+            - Set edgeTo[F] = E
+            - Set distTo[F] = 3
+            - Enqueue F
+            marked[F] = true
+            queue: [G, F]
+          
+          For vertex B (already visited): skip
+          
+          Visit order: A, C, B, D, E, G, F
+
+  Step 7: Dequeue G, process its adjacency list [F, B]
+          queue: [F]
+          
+          For vertex F (already visited): skip
+          For vertex B (already visited): skip
+          
+          No new vertices added to queue
+
+  Step 8: Dequeue F, process its adjacency list [G, E]
+          queue: []
+          
+          For vertex G (already visited): skip
+          For vertex E (already visited): skip
+          
+          No new vertices added to queue
+          Queue is now empty - BFS complete
+
+FINAL ANSWER:
+=============
+BFS Visit Order: A → C → B → D → E → G → F
+
+Level Structure:
+- Level 0: A
+- Level 1: C, B, D
+- Level 2: E, G
+- Level 3: F
+
+Edge-To Tree (parent relationships):
+- A: (source)
+- C: from A
+- B: from A
+- D: from A
+- E: from B
+- G: from B
+- F: from E
+
+Distance from A:
+- A: 0
+- C: 1
+- B: 1
+- D: 1
+- E: 2
+- G: 2
+- F: 3
